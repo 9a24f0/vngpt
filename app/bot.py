@@ -1,4 +1,5 @@
 import discord
+from app.gpt import gpt_response
 
 class BotClient(discord.Client):
   async def on_ready(self):
@@ -9,8 +10,9 @@ class BotClient(discord.Client):
       return
 
     if message.content.startswith('/ask'):
-      message_content = message.content[4:]
-      if len(message_content) == 0:
+      question = message.content[4:]
+      if len(question) == 0:
         await message.channel.send('Please feel free to ask!')
       else:
-        await message.channel.send(message_content)
+        response = gpt_response(question)
+        await message.channel.send(response)
